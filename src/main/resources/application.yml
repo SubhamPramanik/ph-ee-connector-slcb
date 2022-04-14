@@ -17,11 +17,15 @@ zeebe:
 
 slcb:
   auth:
-    host: http://g2p-test.slcb.com:8080/auth
+    host: http://g2p-test.slcb.com:8080
+    auth-endpoint: /auth
     username: ${SLCB_USERNAME:username}
     password: ${SLCB_PASSWORD:password}
   api:
     host: http://g2p-test.slcb.com:8080
+    transaction-request-endpoint: /transactionRequest
+    reconciliation-endpoint: /reconciliation
+    account-balance-endpoint: /accountBalance
   signature:
     key: ${SLCB_SIGNATURE_KEY:very_long_string}
 

@@ -6,6 +6,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
+import org.mifos.connector.slcb.config.SLCBConfig;
 import org.mifos.connector.slcb.dto.AccessTokenDTO;
 import org.mifos.connector.slcb.dto.AuthErrorDTO;
 import org.slf4j.Logger;
@@ -19,14 +20,8 @@ import static org.mifos.connector.slcb.camel.config.CamelProperties.SLCB_ACCESS_
 @Component
 public class AuthRoutes extends RouteBuilder {
 
-    @Value("${slcb.auth.host}")
-    private String authUrl;
-
-    @Value("${slcb.auth.username}")
-    private String username;
-
-    @Value("${slcb.auth.password}")
-    private String password;
+    @Autowired
+    public SLCBConfig slcbConfig;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -69,7 +64,7 @@ public class AuthRoutes extends RouteBuilder {
                 .setHeader("Content-Type", constant("application/json"))
                 .removeHeader(Exchange.HTTP_PATH)
                 .setBody(exchange -> {
-                    AccessTokenDTO slcbAuthRequest = new AccessTokenDTO(username, password);
+                    AccessTokenDTO slcbAuthRequest = new AccessTokenDTO(slcbConfig.username, slcbConfig.password);
                     try {
                         return objectMapper.writeValueAsString(slcbAuthRequest); // TODO: Might break things here
                     } catch (JsonProcessingException e) {
@@ -77,7 +72,7 @@ public class AuthRoutes extends RouteBuilder {
                     }
                     return null;
                 })
-                .toD(authUrl + "?bridgeEndpoint=true");
+                .toD(slcbConfig.authUrl + "?bridgeEndpoint=true");
 
         /**
          * Access Token check validity and return value

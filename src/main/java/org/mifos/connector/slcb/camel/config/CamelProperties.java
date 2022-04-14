@@ -10,4 +10,6 @@ public class CamelProperties {
     public static final String TRANSACTION_ID = "transactionId";
     public static final String SLCB_ACCESS_TOKEN = "slcbAccessToken";
     public static final String SLCB_CHANNEL_REQUEST = "slcbChannelRequest";
+    public static final String SLCB_BALANCE_REQUEST = "slcbBalanceRequest";
+    public static final String SLCB_RECONCILIATION_REQUEST = "slcbReconciliationRequest";
 }
